@@ -11,6 +11,7 @@ public class StreamWordCount {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     // 2. 读取文件
     // DataStreamSource<String> lineStream = env.readTextFile("input/words.txt");
+    // nc -lk 7777
     DataStreamSource<String> lineStream = env.socketTextStream("localhost", 7777);
     // 3. 转换、分组、求和，得到统计结果
     SingleOutputStreamOperator<Tuple2<String, Long>> sum =
