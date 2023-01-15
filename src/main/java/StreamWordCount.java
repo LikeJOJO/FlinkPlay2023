@@ -7,9 +7,12 @@ import org.apache.flink.util.Collector;
 
 public class StreamWordCount {
   public static void main(String[] args) throws Exception {
-    // First in terminal >> nc -lk 7777
+    // 1. 创建流式执行环境
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+    // 2. 读取文件
+    // DataStreamSource<String> lineStream = env.readTextFile("input/words.txt");
     DataStreamSource<String> lineStream = env.socketTextStream("localhost", 7777);
+    // 3. 转换、分组、求和，得到统计结果
     SingleOutputStreamOperator<Tuple2<String, Long>> sum =
             lineStream.flatMap((String line, Collector<Tuple2<String, Long>> out) -> {
                       String[] words = line.split(" ");
