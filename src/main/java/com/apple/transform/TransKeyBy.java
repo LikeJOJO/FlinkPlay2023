@@ -7,26 +7,26 @@ import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class TransKeyBy {
-  public static void main(String[] args) throws Exception {
-    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-    env.setParallelism(1);
+    public static void main(String[] args) throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setParallelism(1);
 
-    DataStreamSource<Event> stream = env.fromElements(
-            new Event("Mary", "./home", 1000L),
-            new Event("Bob", "./cart", 2000L)
-    );
+        DataStreamSource<Event> stream = env.fromElements(
+                new Event("Mary", "./home", 1000L),
+                new Event("Bob", "./cart", 2000L)
+        );
 
-    // 使用Lambda表达式
-    KeyedStream<Event, String> keyedStream = stream.keyBy(e -> e.user);
+        // 使用Lambda表达式
+        KeyedStream<Event, String> keyedStream = stream.keyBy(e -> e.user);
 
-    // 使用匿名类实现KeySelector
-    KeyedStream<Event, String> keyedStream1 = stream.keyBy(new KeySelector<Event, String>() {
-      @Override
-      public String getKey(Event e) throws Exception {
-        return e.user;
-      }
-    });
+        // 使用匿名类实现KeySelector
+        KeyedStream<Event, String> keyedStream1 = stream.keyBy(new KeySelector<Event, String>() {
+            @Override
+            public String getKey(Event e) throws Exception {
+                return e.user;
+            }
+        });
 
-    env.execute();
-  }
+        env.execute();
+    }
 }
